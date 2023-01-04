@@ -6,8 +6,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { ChannelChats } from './ChannelChats';
+import { ChannelMembers } from './ChannelMembers';
+import { Workspaces } from './Workspaces';
 
+//TODO: without {}...?
 @Index('WorkspaceId', ['WorkspaceId'], {})
 @Entity({ schema: 'slack' })
 export class Channels {
@@ -31,8 +38,29 @@ export class Channels {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  //TODO: need this?
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  //TODO: workspace id...
+  @Column('int', { name: 'WorkspaceId', nullable: true })
+  WorkspaceId: number | null;
+
+  @OneToMany(() => ChannelChats, (channelChats) => channelChats.Channel)
+  ChannelChats: ChannelChats[];
+
+  @OneToMany(() => ChannelMembers, (channelMembers) => channelMembers.Channel, {
+    cascade: ['insert'], //FIXME: to see after
+  })
+  ChannelMembers: ChannelMembers[];
+
+  // FIXME: ManyToMany => 2 OneToany...?
+  // @ManyToMany(() => Users, (users) => users.Channels)
+  // Members: Users[];
+
+  @ManyToOne(() => Workspaces, (workspaces) => workspaces.Channels, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn([{ name: 'WorkspaceId', referencedColumnName: 'id' }])
+  Workspace: Workspaces;
 }
