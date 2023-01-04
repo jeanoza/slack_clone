@@ -22,4 +22,10 @@
    (Cannot exist independantly without RELATION)
 
 6. Two OneToMany with relation table => ManyToMany
+
    - After test all
+
+7. Create MVC model : g == generate
+   - module: nest g mo <NAME>
+   - service: nest g s <NAME>
+   - controller: nest g co <NAME>
