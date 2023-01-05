@@ -34,3 +34,7 @@
 8. How to use raw query with typeorm(write directly query)?
 
 - https://stackoverflow.com/questions/44493554/does-typeorm-supports-raw-sql-queries-for-input-and-output
+
+9. class validator && ExceptionFilter => to process error response.
+
+10. request life cycle : https://docs.nestjs.com/faq/request-lifecycle
