@@ -26,6 +26,11 @@
    - After test all
 
 7. Create MVC model : g == generate
+
    - module: nest g mo <NAME>
    - service: nest g s <NAME>
    - controller: nest g co <NAME>
+
+8. How to use raw query with typeorm(write directly query)?
+
+- https://stackoverflow.com/questions/44493554/does-typeorm-supports-raw-sql-queries-for-input-and-output

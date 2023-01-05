@@ -1,9 +1,20 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseInterceptors,
+} from '@nestjs/common';
 import { JoinRequestDto } from './dto/join.request.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserDto } from 'src/commons/dto/users.dto';
+import { User } from 'src/commons/decorators/user.decorator';
+import { UndefinedToNullInterceptor } from 'src/commons/interceptors/undefinedToNull.interceptor';
 
+@UseInterceptors(UndefinedToNullInterceptor)
 @ApiTags('USER')
 @Controller('users')
 export class UsersController {
@@ -16,8 +27,8 @@ export class UsersController {
   })
   @ApiOperation({ summary: 'Get current user info' })
   @Get()
-  getUsers(@Req() req) {
-    return req.user;
+  getUsers(@User() user) {
+    return user;
   }
 
   @ApiOperation({ summary: 'Sign in' })
@@ -28,8 +39,8 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Log in' })
   @Post('login')
-  logIn() {
-    return;
+  logIn(@User() user) {
+    return user;
   }
   @ApiOperation({ summary: 'Log out' })
   @Post('logout')
