@@ -8,6 +8,14 @@ import { ChannelsModule } from './channels/channels.module';
 import { DmsModule } from './dms/dms.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ChannelChats } from './entities/ChannelChats';
+import { ChannelMembers } from './entities/ChannelMembers';
+import { Channels } from './entities/Channels';
+import { DMs } from './entities/DMs';
+import { Mentions } from './entities/Mentions';
+import { Users } from './entities/Users';
+import { WorkspaceMembers } from './entities/WorkspaceMembers';
+import { Workspaces } from './entities/Workspaces';
 
 @Module({
   imports: [
@@ -23,14 +31,24 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      synchronize: true, // 'true' at the first time then 'false' to do not lose data
+      synchronize: false, // 'true' at the first time then 'false' to do not lose data
       // entities: ['entities/*.js'],
-      autoLoadEntities: true,
+      // autoLoadEntities: true,
+      entities: [
+        ChannelChats,
+        ChannelMembers,
+        Channels,
+        DMs,
+        Mentions,
+        Users,
+        WorkspaceMembers,
+        Workspaces,
+      ],
       logging: true,
       keepConnectionAlive: true, //hot-reloading disconnect db when code change
       charset: 'utf8mb4',
     }),
-    //TypeOrmModule.forFeature([Users]) //FIXME:To verify after
+    // TypeOrmModule.forFeature([Users]), //FIXME:To verify after
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

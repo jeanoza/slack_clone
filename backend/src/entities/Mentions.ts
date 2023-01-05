@@ -39,7 +39,7 @@ export class Mentions {
   @Column('int', { name: 'SenderId', nullable: true })
   SenderId: number | null;
 
-  @Column('int', { name: 'SenderId', nullable: true })
+  @Column('int', { name: 'ReceiverId', nullable: true })
   ReceiverId: number | null;
 
   @ManyToOne(() => ChannelChats, (channelChats) => channelChats.Mentions, {

@@ -30,7 +30,7 @@ const dataSource = new DataSource({
   ],
   migrations: [__dirname + '/src/migrations/*.ts'],
   charset: 'utf8mb4_unicode_ci',
-  synchronize: false,
+  synchronize: false, //FIXME: at the first time true, then false always
   logging: true,
 });
 

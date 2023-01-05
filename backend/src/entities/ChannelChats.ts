@@ -33,11 +33,11 @@ export class ChannelChats {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @Column('int', { primary: true, name: 'ChannelId' })
-  ChannelId: number;
+  @Column('int', { name: 'ChannelId', nullable: true })
+  ChannelId: number | null;
 
-  @Column('int', { primary: true, name: 'UserId' })
-  UserId: number;
+  @Column('int', { name: 'UserId', nullable: true })
+  UserId: number | null;
 
   @OneToMany(() => Mentions, (mentions) => mentions.ChannelChat)
   Mentions: Mentions[];

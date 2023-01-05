@@ -36,6 +36,10 @@ export class Users {
   @Column('varchar', { name: 'nickname', length: 30 })
   nickname: string;
 
+  @ApiProperty({
+    example: 'q1w2e3r4t5!',
+    description: 'user password in this site',
+  })
   @Column('varchar', { name: 'password', length: 100, select: false })
   password: string;
 

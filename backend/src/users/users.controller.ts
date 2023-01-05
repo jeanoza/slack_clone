@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Post,
   Req,
@@ -10,20 +11,19 @@ import {
 import { JoinRequestDto } from './dto/join.request.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserDto } from 'src/commons/dto/users.dto';
 import { User } from 'src/commons/decorators/user.decorator';
 import { UndefinedToNullInterceptor } from 'src/commons/interceptors/undefinedToNull.interceptor';
 
 @UseInterceptors(UndefinedToNullInterceptor)
 @ApiTags('USER')
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: UserDto,
+    type: JoinRequestDto,
   })
   @ApiOperation({ summary: 'Get current user info' })
   @Get()
@@ -33,8 +33,13 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Sign in' })
   @Post()
-  postUsers(@Body() data: JoinRequestDto) {
-    this.usersService.postUsers(data.email, data.nickname, data.password);
+  async join(@Body() data: JoinRequestDto) {
+    const result = await this.usersService.join(
+      data.email,
+      data.nickname,
+      data.password,
+    );
+    // return 'ok';
   }
 
   @ApiOperation({ summary: 'Log in' })
