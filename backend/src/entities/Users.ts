@@ -7,6 +7,8 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { ChannelChats } from './ChannelChats';
 import { ChannelMembers } from './ChannelMembers';

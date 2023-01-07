@@ -38,3 +38,13 @@
 9. class validator && ExceptionFilter => to process error response.
 
 10. request life cycle : https://docs.nestjs.com/faq/request-lifecycle
+
+11. Passport
+
+- @nestjs/passport passport passport-local
+
+12. Pipes: ParseIntPipe, ParseFlaotPipe...etc
+
+- https://docs.nestjs.com/pipes#built-in-pipes
+
+13. diff innerJoin, innerJoinAndSelect

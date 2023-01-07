@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './htppException.filter';
+import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
+import * as passport from 'passport';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 
 declare const module: any;
 
@@ -11,7 +14,22 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
 
-  const port = process.env.PORT || 3030;
+  //FIXME: to use passport
+  // app.use(cookieParser());
+  app.use(
+    session({
+      resave: false,
+      saveUninitialized: false,
+      secret: 'hello',
+      cookie: {
+        httpOnly: true,
+      },
+    }),
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  const port = process.env.PORT || 3095;
   const config = new DocumentBuilder()
     .setTitle('Slack')
     .setDescription('This is a api doc for slack clone.')

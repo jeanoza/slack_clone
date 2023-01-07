@@ -13,6 +13,8 @@ import {
 import { ChannelChats } from './ChannelChats';
 import { ChannelMembers } from './ChannelMembers';
 import { Workspaces } from './Workspaces';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 //TODO: without {}...?
 @Index('WorkspaceId', ['WorkspaceId'], {})
@@ -21,9 +23,20 @@ export class Channels {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'General',
+    description: 'channel name',
+  })
   @Column('varchar', { name: 'name', length: 30 })
   name: string;
 
+  @IsBoolean()
+  @ApiProperty({
+    example: 'true | false',
+    description: 'current channel private option',
+  })
   @Column('tinyint', {
     name: 'private',
     nullable: true,

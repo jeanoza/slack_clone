@@ -8,6 +8,7 @@ import {
   DeleteDateColumn,
   OneToMany,
   ManyToOne,
+  ManyToMany,
   JoinColumn,
 } from 'typeorm';
 import { Channels } from './Channels';
@@ -15,6 +16,8 @@ import { Users } from './Users';
 import { WorkspaceMembers } from './WorkspaceMembers';
 import { DMs } from './DMs';
 import { Mentions } from './Mentions';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 @Index('name', ['name'], { unique: true })
 @Index('url', ['url'], { unique: true })
@@ -24,9 +27,15 @@ export class Workspaces {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: 'slack', description: 'workspace name' })
   @Column('varchar', { name: 'name', unique: true, length: 30 })
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: 'https://example.com', description: 'workspace url' })
   @Column('varchar', { name: 'url', unique: true, length: 30 })
   url: string;
 
@@ -58,11 +67,13 @@ export class Workspaces {
   )
   WorkspaceMembers: WorkspaceMembers[];
 
-  // @ManyToOne(() => Users, (users) => users.Workspaces)
   @ManyToOne(() => Users, (users) => users.OwnedWorkspaces, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'OwnerId', referencedColumnName: 'id' }])
   Owner: Users;
+
+  // @ManyToMany(() => Users, (users) => users.Workspaces)
+  // Members: Users[];
 }
