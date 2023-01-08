@@ -1,12 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NotFoundError } from 'rxjs';
 import { ChannelChats } from 'src/entities/ChannelChats';
 import { ChannelMembers } from 'src/entities/ChannelMembers';
 import { Channels } from 'src/entities/Channels';
 import { Users } from 'src/entities/Users';
 import { Workspaces } from 'src/entities/Workspaces';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class ChannelsService {
@@ -133,4 +132,20 @@ export class ChannelsService {
       .skip(perPage * (page - 1))
       .getMany();
   }
+
+  // async getChannelUnreadsCount(url, name, after) {
+  //   const channel = await this.channelsRepository
+  //     .createQueryBuilder('channel')
+  //     .innerJoin('channel.Workspace', 'workspace', 'workspace.url = :url', {
+  //       url,
+  //     })
+  //     .where('channel.name = :name', { name })
+  //     .getOne();
+  //   return this.channelChatsRepository.count({
+  //     where: {
+  //       ChannelId: channel.id,
+  //       createdAt: MoreThan(new Date(after)),
+  //     },
+  //   });
+  // }
 }

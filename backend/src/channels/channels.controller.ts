@@ -82,6 +82,16 @@ export class ChannelsController {
     );
   }
 
+  @ApiOperation({ summary: 'unreads count' })
+  @Get(':url/channels/:name/unreads')
+  async getUnreads(
+    @Param('url') url,
+    @Param('name') name,
+    @Query('after', ParseIntPipe) after: number,
+  ) {
+    return this.channelsService.getChannelUnreadsCount(url, name, after);
+  }
+
   @Post(':name/chats')
   postChat(@Body() body) {}
 }
