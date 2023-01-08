@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Query, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Query,
+  Param,
+  Body,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/commons/decorators/user.decorator';
 import { Users } from 'src/entities/Users';
@@ -60,9 +68,18 @@ export class ChannelsController {
   }
 
   @Get(':name/chats')
-  getChat(@Query() query, @Param() param) {
-    console.log(query.PerPage, query.page);
-    console.log(param.id, param.url);
+  getChats(
+    @Param('url') workspaceUrl: string,
+    @Param('name') channelName: string,
+    @Query('perpPage', ParseIntPipe) perPage,
+    @Query('page', ParseIntPipe) page,
+  ) {
+    this.channelsService.getAllChannelChat(
+      workspaceUrl,
+      channelName,
+      perPage,
+      page,
+    );
   }
 
   @Post(':name/chats')

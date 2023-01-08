@@ -113,7 +113,7 @@ export class ChannelsService {
     await this.channelMembersRepository.save(channelMember);
   }
 
-  async getChannelChat(
+  async getAllChannelChat(
     url: string,
     name: string,
     perPage: number,
@@ -124,6 +124,13 @@ export class ChannelsService {
       .innerJoin('channelChat.Channel', 'channel', 'channel.name = :name', {
         name,
       })
-      .innerJoin('channel.Workspace', 'workspace', 'workspace.');
+      .innerJoin('channel.Workspace', 'workspace', 'workspace.url = :url', {
+        url,
+      })
+      .innerJoinAndSelect('channelChats.User', 'user')
+      .orderBy('channelChats.createdAt', 'DESC')
+      .take(perPage) //TODO: what is this? => take == limitOfPage, ex: 20 chat by page
+      .skip(perPage * (page - 1))
+      .getMany();
   }
 }

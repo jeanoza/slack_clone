@@ -48,11 +48,11 @@ import { AuthModule } from './auth/auth.module';
         WorkspaceMembers,
         Workspaces,
       ],
-      logging: true,
+      logging: process.env.NODE_ENV !== 'production', // logging only on dev
       keepConnectionAlive: true, //hot-reloading disconnect db when code change
       charset: 'utf8mb4',
     }),
-    // TypeOrmModule.forFeature([Users]), //FIXME:To verify after
+    TypeOrmModule.forFeature([Users]), //FIXME:To verify after
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],
