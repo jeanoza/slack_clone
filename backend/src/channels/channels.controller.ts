@@ -12,7 +12,6 @@ import { User } from 'src/commons/decorators/user.decorator';
 import { Users } from 'src/entities/Users';
 import { ChannelsService } from './channels.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
-import { url } from 'inspector';
 import { PostChatDto } from './dto/post-chat.dto';
 
 @ApiTags('CHANNEL')
