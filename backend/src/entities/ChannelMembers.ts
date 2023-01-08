@@ -16,7 +16,7 @@ import { Users } from './Users';
 @Entity({ schema: 'slack', name: 'channelmembers' })
 export class ChannelMembers {
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;

@@ -12,6 +12,8 @@ import { User } from 'src/commons/decorators/user.decorator';
 import { Users } from 'src/entities/Users';
 import { ChannelsService } from './channels.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
+import { url } from 'inspector';
+import { PostChatDto } from './dto/post-chat.dto';
 
 @ApiTags('CHANNEL')
 @Controller('api/workspaces/:url/channels')
@@ -71,7 +73,7 @@ export class ChannelsController {
   getChats(
     @Param('url') workspaceUrl: string,
     @Param('name') channelName: string,
-    @Query('perpPage', ParseIntPipe) perPage,
+    @Query('perPage', ParseIntPipe) perPage,
     @Query('page', ParseIntPipe) page,
   ) {
     this.channelsService.getAllChannelChat(
@@ -82,6 +84,24 @@ export class ChannelsController {
     );
   }
 
+  @Post(':name/chats')
+  postChat(
+    @Param('url') url: string,
+    @Param('name') name: string,
+    @Body() body: PostChatDto,
+    @User() user: Users,
+  ) {
+    return this.channelsService.postChat({
+      url,
+      content: body.content,
+      name,
+      userId: user.id,
+    });
+  }
+
+  @Post(':name/images')
+  postImages(@Body() body) {}
+
   @ApiOperation({ summary: 'unreads count' })
   @Get(':url/channels/:name/unreads')
   async getUnreads(
@@ -91,7 +111,4 @@ export class ChannelsController {
   ) {
     return this.channelsService.getChannelUnreadsCount(url, name, after);
   }
-
-  @Post(':name/chats')
-  postChat(@Body() body) {}
 }

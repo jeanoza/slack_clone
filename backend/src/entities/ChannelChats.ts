@@ -13,6 +13,8 @@ import {
 import { Channels } from './Channels';
 import { Users } from './Users';
 import { Mentions } from './Mentions';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 @Index('UserId', ['UserId'], {})
 @Index('ChannelId', ['ChannelId'], {})
@@ -21,11 +23,14 @@ export class ChannelChats {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: 'hello', description: 'msg to send' })
   @Column('text', { name: 'content' })
   content: string;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;

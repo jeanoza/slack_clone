@@ -120,7 +120,7 @@ export class ChannelsService {
   ) {
     return this.channelChatsRepository
       .createQueryBuilder('channelChats')
-      .innerJoin('channelChat.Channel', 'channel', 'channel.name = :name', {
+      .innerJoin('channelChats.Channel', 'channel', 'channel.name = :name', {
         name,
       })
       .innerJoin('channel.Workspace', 'workspace', 'workspace.url = :url', {
@@ -133,19 +133,44 @@ export class ChannelsService {
       .getMany();
   }
 
-  // async getChannelUnreadsCount(url, name, after) {
-  //   const channel = await this.channelsRepository
-  //     .createQueryBuilder('channel')
-  //     .innerJoin('channel.Workspace', 'workspace', 'workspace.url = :url', {
-  //       url,
-  //     })
-  //     .where('channel.name = :name', { name })
-  //     .getOne();
-  //   return this.channelChatsRepository.count({
-  //     where: {
-  //       ChannelId: channel.id,
-  //       createdAt: MoreThan(new Date(after)),
-  //     },
-  //   });
-  // }
+  async getChannelUnreadsCount(url: string, name: string, after: number) {
+    const channel = await this.channelsRepository
+      .createQueryBuilder('channel')
+      .innerJoin('channel.Workspace', 'workspace', 'workspace.url = :url', {
+        url,
+      })
+      .where('channel.name = :name', { name })
+      .getOne();
+    return this.channelChatsRepository.count({
+      where: {
+        ChannelId: channel.id,
+        createdAt: MoreThan(new Date(after)),
+      },
+    });
+  }
+
+  async postChat({ url, content, name, userId }) {
+    const channel = await this.channelsRepository
+      .createQueryBuilder('channel')
+      .innerJoin('channel.Workspace', 'workspace', 'workspace.url =: url', {
+        url,
+      })
+      .where('channel.name = :name', { name })
+      .getOne();
+    if (!channel) throw new NotFoundException('No channel exist');
+
+    const chats = new ChannelChats();
+    chats.content = content;
+    chats.UserId = userId;
+    chats.ChannelId = channel.id;
+
+    const savedChat = await this.channelChatsRepository.save(chats);
+    const chatWithUser = await this.channelChatsRepository.findOne({
+      where: { id: savedChat.id },
+      relations: ['User', 'Channel'],
+    });
+    console.log(chatWithUser);
+
+    //send msg with socketIO
+  }
 }

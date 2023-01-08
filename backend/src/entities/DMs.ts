@@ -25,7 +25,7 @@ export class DMs {
   content: string;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;

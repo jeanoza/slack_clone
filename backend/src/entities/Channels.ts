@@ -46,7 +46,7 @@ export class Channels {
   private: boolean | null;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;

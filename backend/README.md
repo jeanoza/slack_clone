@@ -48,3 +48,5 @@
 - https://docs.nestjs.com/pipes#built-in-pipes
 
 13. diff innerJoin, innerJoinAndSelect
+
+14. Websocket, nest gateway: https://docs.nestjs.com/websockets/gateways
